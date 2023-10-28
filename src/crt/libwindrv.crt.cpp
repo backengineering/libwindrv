@@ -14,3 +14,8 @@ extern "C" int __cdecl printf(const char *format, ...)
 
     return NT_SUCCESS(Status);
 }
+
+extern "C" int __cdecl puts(const char *_Str)
+{
+    return printf(_Str);
+}
