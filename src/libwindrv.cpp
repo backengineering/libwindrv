@@ -1,7 +1,6 @@
 #include <libwindrv/libwindrv.h>
 
 #include <ntimage.h>
-
 #define NTSTRSAFE_LIB
 #define NTSTRSAFE_NO_CB_FUNCTIONS
 #include <ntstrsafe.h>
