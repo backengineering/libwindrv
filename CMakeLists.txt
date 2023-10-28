@@ -53,6 +53,10 @@ target_compile_features(libwindrv PUBLIC
 	cxx_std_20
 )
 
+target_include_directories(libwindrv PUBLIC
+	include
+)
+
 # Target: testdrv1
 if(ENABLE_TEST) # test_mode
 	set(testdrv1_SOURCES
@@ -67,6 +71,10 @@ if(ENABLE_TEST) # test_mode
 
 	target_compile_features(testdrv1 PRIVATE
 		cxx_std_20
+	)
+
+	target_include_directories(testdrv1 PRIVATE
+		include
 	)
 
 	target_link_libraries(testdrv1 PRIVATE

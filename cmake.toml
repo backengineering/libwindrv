@@ -26,10 +26,14 @@ compile-features = ["cxx_std_20"]
 
 [target.libwindrv]
 type = "driver_lib"
+include-directories = ["include"]
+headers = ["src/*.h"]
 sources = ["src/*.cpp", "src/*.hpp", "src/*.h"]
 
 [target.testdrv1]
 condition = "test_mode"
 type = "driver"
+include-directories = ["include"]
+headers = ["test/testdrv1/*.h"]
 sources = ["test/testdrv1/*.cpp", "test/testdrv1/*.hpp", "test/testdrv1/*.h"]
 link-libraries = ["libwindrv"]
