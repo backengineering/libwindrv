@@ -1,7 +1,7 @@
 #include <libwindrv/libwindrv.h>
 
 EXTERN_C
-void
+VOID
 LibWinDrvDriverUnLoad(__in DRIVER_OBJECT *driverObject)
 {
     UNREFERENCED_PARAMETER(driverObject);

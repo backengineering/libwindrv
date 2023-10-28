@@ -34,7 +34,7 @@ wchar_t LibWinDrvServiceKeyName[_MAX_PATH];
 PVOID LibWinDrvImageBase = nullptr;
 SIZE_T LibWinDrvImageSize = 0;
 
-void
+VOID
 DriverUnload(__in DRIVER_OBJECT *driverObject)
 {
     UNREFERENCED_PARAMETER(driverObject);
