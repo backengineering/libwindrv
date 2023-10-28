@@ -53,6 +53,10 @@ target_compile_features(libwindrv PUBLIC
 	cxx_std_20
 )
 
+target_compile_options(libwindrv PUBLIC
+	"/GL"
+)
+
 target_include_directories(libwindrv PUBLIC
 	include
 )
@@ -71,6 +75,10 @@ if(ENABLE_TEST) # test_mode
 
 	target_compile_features(testdrv1 PRIVATE
 		cxx_std_20
+	)
+
+	target_compile_options(testdrv1 PRIVATE
+		"/GL"
 	)
 
 	target_include_directories(testdrv1 PRIVATE
