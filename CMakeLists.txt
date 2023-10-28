@@ -41,6 +41,7 @@ find_package(WDK REQUIRED)
 # Target: libwindrv
 set(libwindrv_SOURCES
 	"src/libwindrv.cpp"
+	"include/libwindrv/libwindrv.h"
 	cmake.toml
 )
 

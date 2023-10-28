@@ -29,7 +29,7 @@ compile-options = ["/GL"]
 [target.libwindrv]
 type = "driver_lib"
 include-directories = ["include"]
-headers = ["src/*.h"]
+headers = ["src/*.h", "include/libwindrv/*.h"]
 sources = ["src/*.cpp", "src/*.hpp", "src/*.h"]
 
 [target.testdrv1]
