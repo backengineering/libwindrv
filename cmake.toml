@@ -18,13 +18,13 @@ CMAKE_MODULE_PATH = "${CMAKE_CURRENT_SOURCE_DIR}/cmake"
 type = "executable"
 add-function = "wdk_add_driver"
 compile-features = ["cxx_std_20"]
-compile-options = ["/GL"]
+compile-options = ["/GL", "/W4"]
 
 [template.driver_lib]
 type = "static"
 add-function = "wdk_add_library"
 compile-features = ["cxx_std_20"]
-compile-options = ["/GL"]
+compile-options = ["/GL", "/W4"]
 
 [target.libwindrv]
 type = "driver_lib"

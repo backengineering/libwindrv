@@ -2,9 +2,9 @@
 
 EXTERN_C
 VOID
-LibWinDrvDriverUnLoad(__in DRIVER_OBJECT *driverObject)
+LibWinDrvDriverUnLoad(__in DRIVER_OBJECT *DriverObject)
 {
-    UNREFERENCED_PARAMETER(driverObject);
+    UNREFERENCED_PARAMETER(DriverObject);
 }
 
 EXTERN_C

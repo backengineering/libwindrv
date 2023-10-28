@@ -35,11 +35,11 @@ PVOID LibWinDrvImageBase = nullptr;
 SIZE_T LibWinDrvImageSize = 0;
 
 VOID
-DriverUnload(__in DRIVER_OBJECT *driverObject)
+DriverUnload(__in DRIVER_OBJECT *DriverObject)
 {
-    UNREFERENCED_PARAMETER(driverObject);
+    UNREFERENCED_PARAMETER(DriverObject);
 
-    LibWinDrvDriverUnLoad(driverObject);
+    LibWinDrvDriverUnLoad(DriverObject);
 
     // TODO
 }

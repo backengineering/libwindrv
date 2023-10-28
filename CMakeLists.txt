@@ -58,6 +58,7 @@ target_compile_features(libwindrv PUBLIC
 
 target_compile_options(libwindrv PUBLIC
 	"/GL"
+	"/W4"
 )
 
 target_include_directories(libwindrv PUBLIC
@@ -82,6 +83,7 @@ if(ENABLE_TEST) # test_mode
 
 	target_compile_options(testdrv1 PRIVATE
 		"/GL"
+		"/W4"
 	)
 
 	target_include_directories(testdrv1 PRIVATE
