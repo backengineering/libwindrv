@@ -29,13 +29,13 @@ compile-options = ["/GL"]
 [target.libwindrv]
 type = "driver_lib"
 include-directories = ["include"]
-headers = ["src/*.h", "include/libwindrv/*.h"]
-sources = ["src/*.cpp", "src/*.hpp", "src/*.h"]
+headers = ["src/*.h", "include/libwindrv/**.h"]
+sources = ["src/**.cpp", "src/**.c", "src/**.hpp", "src/**.h"]
 
 [target.testdrv1]
 condition = "test_mode"
 type = "driver"
 include-directories = ["include"]
-headers = ["test/testdrv1/*.h"]
-sources = ["test/testdrv1/*.cpp", "test/testdrv1/*.hpp", "test/testdrv1/*.h"]
+headers = ["test/testdrv1/**.h"]
+sources = ["test/testdrv1/**.cpp", "test/testdrv1/**.hpp", "test/testdrv1/**.h"]
 link-libraries = ["libwindrv"]

@@ -2,9 +2,7 @@
 #include <fltKernel.h>
 #include <stdlib.h>
 
-#ifdef __cplusplus
-extern "C" {
-#endif
+#include <libwindrv/crt/libwindrv.crt.h>
 
 EXTERN_C
 PDRIVER_OBJECT LibWinDrvDriverObject;
@@ -20,7 +18,3 @@ EXTERN_C
 DRIVER_INITIALIZE LibWinDrvDriverEntry;
 EXTERN_C
 DRIVER_UNLOAD LibWinDrvDriverUnLoad;
-
-#ifdef __cplusplus
-}
-#endif
