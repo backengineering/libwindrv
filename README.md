@@ -4,6 +4,7 @@ libwindrv is a windows driver library for testing the llvm-msvc compiler when tu
 
 ## Requirements
 
+- Windows build 21389 or later
 - Visual Studio 2022
 - CMake 3.15+
 - [WDK 11](https://learn.microsoft.com/en-us/windows-hardware/drivers/download-the-wdk)
