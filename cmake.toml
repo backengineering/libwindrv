@@ -1,0 +1,35 @@
+
+# Reference: https://build-cpp.github.io/cmkr/cmake-toml
+
+[conditions]
+test_mode = "ENABLE_TEST"
+
+[project]
+name = "libwindrv"
+include-before = ["cmake/msvc-configurations.cmake"]
+msvc-runtime = "static"
+
+[variables]
+CMAKE_MODULE_PATH = "${CMAKE_CURRENT_SOURCE_DIR}/cmake"
+
+[find-package.WDK]
+
+[template.driver]
+type = "executable"
+add-function = "wdk_add_driver"
+compile-features = ["cxx_std_20"]
+
+[template.driver_lib]
+type = "static"
+add-function = "wdk_add_library"
+compile-features = ["cxx_std_20"]
+
+[target.libwindrv]
+type = "driver_lib"
+sources = ["src/*.cpp", "src/*.hpp", "src/*.h"]
+
+[target.testdrv1]
+condition = "test_mode"
+type = "driver"
+sources = ["test/testdrv1/*.cpp", "test/testdrv1/*.hpp", "test/testdrv1/*.h"]
+link-libraries = ["libwindrv"]
