@@ -37,8 +37,6 @@ SIZE_T LibWinDrvImageSize = 0;
 VOID
 DriverUnload(__in DRIVER_OBJECT *DriverObject)
 {
-    UNREFERENCED_PARAMETER(DriverObject);
-
     LibWinDrvDriverUnLoad(DriverObject);
 
     // TODO
