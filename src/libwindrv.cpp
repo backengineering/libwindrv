@@ -35,7 +35,7 @@ PVOID LibWinDrvImageBase = nullptr;
 SIZE_T LibWinDrvImageSize = 0;
 
 void
-OnUnload(__in DRIVER_OBJECT *driverObject)
+DriverUnload(__in DRIVER_OBJECT *driverObject)
 {
     UNREFERENCED_PARAMETER(driverObject);
 
@@ -51,7 +51,7 @@ DriverEntry(__in DRIVER_OBJECT *DriverObject, __in UNICODE_STRING *RegistryPath)
     NTSTATUS Status = STATUS_UNSUCCESSFUL;
     // TODO
 
-    DriverObject->DriverUnload = (DRIVER_UNLOAD *)(OnUnload);
+    DriverObject->DriverUnload = (DRIVER_UNLOAD *)(DriverUnload);
     LibWinDrvDriverObject = DriverObject;
 
     do
