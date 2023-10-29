@@ -11,6 +11,11 @@ libwindrv is a windows driver library for testing the llvm-msvc compiler when tu
 - [ARM64 Kits](https://learn.microsoft.com/en-us/windows-hardware/drivers/develop/building-arm64-drivers)
 - [llvm-msvc](https://github.com/backengineering/llvm-msvc/releases)
 
+## How to enable CET
+- Run [enable_cet.bat](https://github.com/backengineering/libwindrv/blob/dev/tools/enable_cet.bat) in administrator mode
+- Reboot 2 times
+
+
 ## Building win-x64 with llvm-msvc
 
 ```
