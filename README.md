@@ -26,7 +26,7 @@ cmake --build build --config Release
 ## Building win-arm64 with llvm-msvc
 
 ```
-cmake -Bbuild_arm64 -TLLVM-MSVC_v143 -DCMAKE_ARM64_DRIVER=1
+cmake -Bbuild_arm64 -AARM64 -TLLVM-MSVC_v143 -DCMAKE_ARM64_DRIVER=1
 cmake --build build_arm64 --config Release
 ```
 
@@ -40,7 +40,7 @@ cmake --build build --config Release
 ## Building win-arm64 with llvm-msvc in test mode
 
 ```
-cmake -Bbuild_arm64 -TLLVM-MSVC_v143 -DCMAKE_ARM64_DRIVER=1 -DENABLE_TEST=1
+cmake -Bbuild_arm64 -AARM64 -TLLVM-MSVC_v143 -DCMAKE_ARM64_DRIVER=1 -DENABLE_TEST=1
 cmake --build build_arm64 --config Release
 ```
 
