@@ -5,7 +5,7 @@ VOID
 LibWinDrvDriverUnLoad(__in DRIVER_OBJECT *DriverObject)
 {
     UNREFERENCED_PARAMETER(DriverObject);
-    printf("world hello\n");
+    dprintf("world hello\n");
 }
 
 EXTERN_C
@@ -15,6 +15,6 @@ LibWinDrvDriverEntry(__in DRIVER_OBJECT *DriverObject, __in UNICODE_STRING *Regi
     UNREFERENCED_PARAMETER(DriverObject);
     UNREFERENCED_PARAMETER(RegistryPath);
 
-    printf("hello world\n");
+    dprintf("hello world\n");
     return -1;
 }
