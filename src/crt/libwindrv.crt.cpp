@@ -9,7 +9,7 @@ extern "C" int __cdecl printf(const char *format, ...)
     va_list Args;
 
     va_start(Args, format);
-    Status = vDbgPrintEx(DPFLTR_DEFAULT_ID, DPFLTR_ERROR_LEVEL, format, Args);
+    Status = vDbgPrintEx(DPFLTR_IHVDRIVER_ID, DPFLTR_INFO_LEVEL, format, Args);
     va_end(Args);
 
     return NT_SUCCESS(Status);
@@ -17,5 +17,5 @@ extern "C" int __cdecl printf(const char *format, ...)
 
 extern "C" int __cdecl puts(const char *_Str)
 {
-    return printf(_Str);
+    return DbgPrintEx(DPFLTR_IHVDRIVER_ID, DPFLTR_INFO_LEVEL, _Str);
 }
