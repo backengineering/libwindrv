@@ -19,28 +19,28 @@ libwindrv is a windows driver library for testing the llvm-msvc compiler when tu
 ## Building win-x64 with llvm-msvc
 
 ```
-cmake -Bbuild -TLLVM-MSVC_v143 -DCMAKE_WIN64_DRIVER=1
+cmake -Bbuild -TLLVM-MSVC_v143
 cmake --build build --config Release
 ```
 
 ## Building win-arm64 with llvm-msvc
 
 ```
-cmake -Bbuild_arm64 -AARM64 -TLLVM-MSVC_v143 -DCMAKE_ARM64_DRIVER=1
+cmake -Bbuild_arm64 -AARM64 -TLLVM-MSVC_v143
 cmake --build build_arm64 --config Release
 ```
 
 ## Building win-x64 with llvm-msvc in test mode
 
 ```
-cmake -Bbuild -TLLVM-MSVC_v143 -DCMAKE_WIN64_DRIVER=1 -DENABLE_TEST=1
+cmake -Bbuild -TLLVM-MSVC_v143 -DENABLE_TEST=1
 cmake --build build --config Release
 ```
 
 ## Building win-arm64 with llvm-msvc in test mode
 
 ```
-cmake -Bbuild_arm64 -AARM64 -TLLVM-MSVC_v143 -DCMAKE_ARM64_DRIVER=1 -DENABLE_TEST=1
+cmake -Bbuild_arm64 -AARM64 -TLLVM-MSVC_v143 -DENABLE_TEST=1
 cmake --build build_arm64 --config Release
 ```
 
