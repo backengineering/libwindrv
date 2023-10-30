@@ -175,24 +175,25 @@ function(wdk_add_driver _target)
     endif()
 
     target_link_libraries(${_target} PRIVATE 
-    WDK::NTOSKRNL 
-    WDK::HAL 
-    WDK::WMILIB 
-    WDK::FLTMGR 
-    WDK::TDI 
-    WDK::NETIO 
-    WDK::NTSTRSAFE 
-    WDK::AUX_KLIB 
-    WDK::WDMSEC 
-    WDK::WDM 
-    WDK::LIBCNTPR
-    WDK::BUFFEROVERFLOWFASTFAILK
+        WDK::NTOSKRNL 
+        WDK::HAL 
+        WDK::WMILIB 
+        WDK::FLTMGR 
+        WDK::TDI 
+        WDK::NETIO 
+        WDK::NTSTRSAFE 
+        WDK::AUX_KLIB 
+        WDK::WDMSEC 
+        WDK::WDM 
+        WDK::LIBCNTPR
     )
     
     if(CMAKE_WIN64_DRIVER)
         target_link_libraries(${_target} PRIVATE WDK::BUFFEROVERFLOWK)
+    elseif(CMAKE_ARM64_DRIVER)
+        target_link_libraries(${_target} PRIVATE WDK::BUFFEROVERFLOWFASTFAILK)
     endif()
-
+    
     if(WDK_KMDF)
         target_link_libraries(${_target} PRIVATE 
             "${WDK_ROOT}/Lib/wdf/kmdf/${WDK_PLATFORM}/${WDK_KMDF}/WdfDriverEntry.lib"
