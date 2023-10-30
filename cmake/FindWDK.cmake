@@ -174,7 +174,20 @@ function(wdk_add_driver _target)
         set_property(TARGET ${_target} APPEND_STRING PROPERTY INCLUDE_DIRECTORIES "${WDK_ROOT}/Include/wdf/kmdf/${WDK_KMDF}")
     endif()
 
-    target_link_libraries(${_target} PRIVATE WDK::NTOSKRNL WDK::HAL WDK::WMILIB WDK::FLTMGR WDK::TDI WDK::NETIO WDK::NTSTRSAFE WDK::AUX_KLIB WDK::WDMSEC WDK::WDM WDK::LIBCNTPR)
+    target_link_libraries(${_target} PRIVATE 
+    WDK::NTOSKRNL 
+    WDK::HAL 
+    WDK::WMILIB 
+    WDK::FLTMGR 
+    WDK::TDI 
+    WDK::NETIO 
+    WDK::NTSTRSAFE 
+    WDK::AUX_KLIB 
+    WDK::WDMSEC 
+    WDK::WDM 
+    WDK::LIBCNTPR
+    WDK::BUFFEROVERFLOWFASTFAILK
+    )
     
     if(CMAKE_WIN64_DRIVER)
         target_link_libraries(${_target} PRIVATE WDK::BUFFEROVERFLOWK)
