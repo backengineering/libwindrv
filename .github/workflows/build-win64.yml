@@ -20,7 +20,7 @@ jobs:
       
     - name: Build
       run: |
-        cmake -Bbuild -TLLVM-MSVC_v143 -DCMAKE_WIN64_DRIVER=1 -DENABLE_TEST=1
+        cmake -Bbuild -Ax64 -TLLVM-MSVC_v143 -DENABLE_TEST=1
         cmake --build build --config Release
     
     - uses: actions/upload-artifact@v2
