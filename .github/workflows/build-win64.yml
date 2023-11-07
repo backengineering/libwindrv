@@ -21,7 +21,7 @@ jobs:
     - name: Build
       run: |
         cmake -Bbuild_x64 -Ax64 -TLLVM-MSVC_v143 -DENABLE_TEST=1
-        cmake --build build_x64 --config Release
+        cmake --build build_x64 --config Release --clean-first
     
     - uses: actions/upload-artifact@v2
       with:
