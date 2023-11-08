@@ -1,5 +1,5 @@
 # ``libwindrv``
-libwindrv is a windows driver library for testing the llvm-msvc compiler when turning on Kernel CET.
+libwindrv is a windows driver library for testing the llvm-msvc compiler when turning on Kernel CET
 
 
 ## Requirements
