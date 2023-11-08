@@ -25,7 +25,7 @@ jobs:
     
     - uses: actions/upload-artifact@v2
       with:
-        name: ${{ github.event.repository.name }}-x64-${{ github.sha }}
+        name: ${{ github.event.repository.name }}-x64-${{ github.run_number }}
         path: |
           build_x64/Release
     
@@ -35,13 +35,13 @@ jobs:
       with:
         files: |
          build_x64/Release/*.*
-        dest: ${{ github.event.repository.name }}-x64-${{ github.sha }}.zip
+        dest: ${{ github.event.repository.name }}-x64-${{ github.run_number }}.zip
 
     - name: Release
       uses: softprops/action-gh-release@de2c0eb89ae2a093876385947365aca7b0e5f844 # v0.1.15
       if: ${{ startsWith(github.ref, 'refs/tags/') }}
       with:
         prerelease: ${{ !startsWith(github.ref, 'refs/tags/v') || contains(github.ref, '-pre') }}
-        files: ${{ github.event.repository.name }}-x64-${{ github.sha }}.zip
+        files: ${{ github.event.repository.name }}-x64-${{ github.run_number }}.zip
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
