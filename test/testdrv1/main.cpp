@@ -51,7 +51,7 @@ LibWinDrvDriverEntry(__in DRIVER_OBJECT *DriverObject, __in UNICODE_STRING *Regi
             int 0x2D
         }
     }
-    __except (1)
+    __except (EXCEPTION_EXECUTE_HANDLER)
     {
         dprintf("except\n");
     }
