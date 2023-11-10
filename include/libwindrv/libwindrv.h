@@ -4,17 +4,10 @@
 
 #include <libwindrv/crt/libwindrv.crt.h>
 
-EXTERN_C
-PDRIVER_OBJECT LibWinDrvDriverObject;
-EXTERN_C
-wchar_t LibWinDrvRegistryKey[_MAX_PATH];
-EXTERN_C
-wchar_t LibWinDrvServiceKeyName[_MAX_PATH];
-EXTERN_C
-PVOID LibWinDrvImageBase;
-EXTERN_C
-SIZE_T LibWinDrvImageSize;
-EXTERN_C
-DRIVER_INITIALIZE LibWinDrvDriverEntry;
-EXTERN_C
-DRIVER_UNLOAD LibWinDrvDriverUnLoad;
+extern "C" PDRIVER_OBJECT LibWinDrvDriverObject;
+extern "C" wchar_t LibWinDrvRegistryKey[_MAX_PATH];
+extern "C" wchar_t LibWinDrvServiceKeyName[_MAX_PATH];
+extern "C" PVOID LibWinDrvImageBase;
+extern "C" SIZE_T LibWinDrvImageSize;
+extern "C" DRIVER_INITIALIZE LibWinDrvDriverEntry;
+extern "C" DRIVER_UNLOAD LibWinDrvDriverUnLoad;
