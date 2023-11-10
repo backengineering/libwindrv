@@ -42,7 +42,7 @@ KCETBSOD()
     }
     __except (EXCEPTION_EXECUTE_HANDLER)
     {
-        dprintf("except\n");
+        dprintf("except in KCETBSOD\n");
     }
 }
 
