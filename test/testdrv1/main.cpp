@@ -28,6 +28,24 @@ LibWinDrvDriverUnLoad(__in DRIVER_OBJECT *DriverObject)
 //     }
 // }
 
+DECLSPEC_NOINLINE
+EXTERN_C
+void
+KCETBSOD()
+{
+    __try
+    {
+        _asm
+        {
+            int 0x2D
+        }
+    }
+    __except (EXCEPTION_EXECUTE_HANDLER)
+    {
+        dprintf("except\n");
+    }
+}
+
 EXTERN_C
 NTSTATUS
 LibWinDrvDriverEntry(__in DRIVER_OBJECT *DriverObject, __in UNICODE_STRING *RegistryPath)
@@ -43,18 +61,7 @@ LibWinDrvDriverEntry(__in DRIVER_OBJECT *DriverObject, __in UNICODE_STRING *Regi
         nop
     }
     dprintf("hello world2\n");*/
-
-    __try
-    {
-        _asm
-        {
-            int 0x2D
-        }
-    }
-    __except (EXCEPTION_EXECUTE_HANDLER)
-    {
-        dprintf("except\n");
-    }
+    KCETBSOD();
 
     return -1;
 }
