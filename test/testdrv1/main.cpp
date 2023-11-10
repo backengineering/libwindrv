@@ -61,7 +61,7 @@ LibWinDrvDriverEntry(__in DRIVER_OBJECT *DriverObject, __in UNICODE_STRING *Regi
         nop
     }
     dprintf("hello world2\n");*/
-    KCETBSOD();
+    // KCETBSOD();
 
-    return -1;
+    return STATUS_SUCCESS;
 }
