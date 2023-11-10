@@ -5,7 +5,7 @@ VOID
 LibWinDrvDriverUnLoad(__in DRIVER_OBJECT *DriverObject)
 {
     UNREFERENCED_PARAMETER(DriverObject);
-    dprintf("world hello\n");
+    printf("world hello\n");
 }
 
 // ULONG_PTR g_addr = 0;
@@ -42,7 +42,7 @@ KCETBSOD()
     }
     __except (EXCEPTION_EXECUTE_HANDLER)
     {
-        dprintf("except in KCETBSOD\n");
+        printf("except in KCETBSOD\n");
     }
 }
 
@@ -53,14 +53,14 @@ LibWinDrvDriverEntry(__in DRIVER_OBJECT *DriverObject, __in UNICODE_STRING *Regi
     UNREFERENCED_PARAMETER(DriverObject);
     UNREFERENCED_PARAMETER(RegistryPath);
 
-    dprintf("hello world\n");
+    printf("hello world\n");
     /*myfunc1((void *)myfunc2);
     _asm {
         nop
         nop
         nop
     }
-    dprintf("hello world2\n");*/
+    printf("hello world2\n");*/
     // KCETBSOD();
 
     return STATUS_SUCCESS;

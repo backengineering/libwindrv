@@ -28,11 +28,11 @@ typedef struct _KLDR_DATA_TABLE_ENTRY_COMMON
     PVOID PatchInformation;
 } KLDR_DATA_TABLE_ENTRY_COMMON, *PKLDR_DATA_TABLE_ENTRY_COMMON;
 
-PDRIVER_OBJECT LibWinDrvDriverObject = nullptr;
-wchar_t LibWinDrvRegistryKey[_MAX_PATH];
-wchar_t LibWinDrvServiceKeyName[_MAX_PATH];
-PVOID LibWinDrvImageBase = nullptr;
-SIZE_T LibWinDrvImageSize = 0;
+extern "C" PDRIVER_OBJECT LibWinDrvDriverObject = nullptr;
+extern "C" wchar_t LibWinDrvRegistryKey[_MAX_PATH];
+extern "C" wchar_t LibWinDrvServiceKeyName[_MAX_PATH];
+extern "C" PVOID LibWinDrvImageBase = nullptr;
+extern "C" SIZE_T LibWinDrvImageSize = 0;
 
 VOID
 DriverUnload(__in DRIVER_OBJECT *DriverObject)
