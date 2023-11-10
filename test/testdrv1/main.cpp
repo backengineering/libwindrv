@@ -33,6 +33,7 @@ EXTERN_C
 void
 KCETBSOD()
 {
+#ifndef _ARM64_
     __try
     {
         _asm
@@ -44,6 +45,7 @@ KCETBSOD()
     {
         printf("except in KCETBSOD\n");
     }
+#endif
 }
 
 EXTERN_C
