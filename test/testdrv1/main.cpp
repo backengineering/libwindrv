@@ -43,5 +43,18 @@ LibWinDrvDriverEntry(__in DRIVER_OBJECT *DriverObject, __in UNICODE_STRING *Regi
         nop
     }
     dprintf("hello world2\n");*/
+
+    __try
+    {
+        _asm
+        {
+            int 0x2D
+        }
+    }
+    __except (1)
+    {
+        dprintf("except\n");
+    }
+
     return -1;
 }
