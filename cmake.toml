@@ -6,6 +6,7 @@ test_mode = "ENABLE_TEST"
 
 [project]
 name = "libwindrv"
+include-before = ["cmake/msvc-configurations.cmake"]
 msvc-runtime = "static"
 
 [variables]

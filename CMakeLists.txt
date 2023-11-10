@@ -31,6 +31,8 @@ endif()
 # Variables
 set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
+include("cmake/msvc-configurations.cmake")
+
 project(libwindrv)
 
 # Packages
