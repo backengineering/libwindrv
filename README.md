@@ -12,8 +12,11 @@ libwindrv is a windows driver library for testing the llvm-msvc compiler when tu
 - [llvm-msvc](https://github.com/backengineering/llvm-msvc/releases)
 
 ## How to enable Kernel CET
-- Run [enable_cet.bat](https://github.com/backengineering/libwindrv/blob/dev/tools/enable_cet.bat) in administrator mode
-- Reboot 2 times
+```
+reg add HKLM\SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity /v Enabled /t REG_DWORD /d 1 /f
+reg add HKLM\SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\KernelShadowStacks /v Enabled /t REG_DWORD /d 1 /f
+reg add HKLM\SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\KernelShadowStacks /v AuditModeEnabled /t REG_DWORD /d 1 /f
+```
 
 
 ## Building win-x64 with llvm-msvc
