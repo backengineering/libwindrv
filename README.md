@@ -11,11 +11,35 @@ libwindrv is a windows driver library for testing the llvm-msvc compiler when tu
 - [ARM64 Kits](https://learn.microsoft.com/en-us/windows-hardware/drivers/develop/building-arm64-drivers)
 - [llvm-msvc](https://github.com/backengineering/llvm-msvc/releases)
 
-## How to enable Kernel CET?
+## How to enable KCET?
 ```
 reg add HKLM\SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\HypervisorEnforcedCodeIntegrity /v Enabled /t REG_DWORD /d 1 /f
 reg add HKLM\SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\KernelShadowStacks /v Enabled /t REG_DWORD /d 1 /f
 reg add HKLM\SYSTEM\CurrentControlSet\Control\DeviceGuard\Scenarios\KernelShadowStacks /v AuditModeEnabled /t REG_DWORD /d 1 /f
+```
+
+## How can I tell if KCET has been successfully enabled?
+```C++
+// If the following code causes a BSOD, it means that KCET has been successfully activated.
+DECLSPEC_NOINLINE
+EXTERN_C
+void
+KCETBSOD()
+{
+#ifndef _ARM64_
+    __try
+    {
+        _asm
+        {
+            int 0x2D
+        }
+    }
+    __except (EXCEPTION_EXECUTE_HANDLER)
+    {
+        printf("except in KCETBSOD\n");
+    }
+#endif
+}
 ```
 
 ## What does dump look like?
