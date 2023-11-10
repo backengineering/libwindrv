@@ -29,8 +29,6 @@ extern "C" int __cdecl dprintf(const char *format, ...)
 
 extern "C" int __cdecl puts(const char *_Str)
 {
-    char Temp[] = {117, 23, 0};
-    Temp[0] ^= 80;
-    Temp[1] ^= 100;
+    char Temp[] = {'%', 's', '\n', 0};
     return printf(Temp, _Str);
 }
