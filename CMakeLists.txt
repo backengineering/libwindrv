@@ -69,6 +69,7 @@ target_include_directories(libwindrv PUBLIC
 if(ENABLE_TEST) # test_mode
 	set(testdrv1_SOURCES
 		"test/testdrv1/main.cpp"
+		"test/testdrv1/main2.cpp"
 		cmake.toml
 	)
 

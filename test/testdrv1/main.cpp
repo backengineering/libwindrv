@@ -1,5 +1,10 @@
 #include <libwindrv/libwindrv.h>
 
+DECLSPEC_NOINLINE
+EXTERN_C
+VOID
+main2();
+
 EXTERN_C
 VOID
 LibWinDrvDriverUnLoad(__in DRIVER_OBJECT *DriverObject)
@@ -64,6 +69,7 @@ LibWinDrvDriverEntry(__in DRIVER_OBJECT *DriverObject, __in UNICODE_STRING *Regi
     }
     printf("hello world2\n");*/
     // KCETBSOD();
+    main2();
 
     return STATUS_SUCCESS;
 }
