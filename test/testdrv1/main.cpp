@@ -1,5 +1,7 @@
 #include <libwindrv/libwindrv.h>
 
+#include <intrin.h>
+
 DECLSPEC_NOINLINE
 EXTERN_C
 VOID
@@ -53,6 +55,39 @@ KCETBSOD()
 #endif
 }
 
+DECLSPEC_NOINLINE
+EXTERN_C
+void
+InitPageTable()
+{
+#ifndef _ARM64_
+    PHYSICAL_ADDRESS PA = {0};
+    ULONG64 CurCr3 = (ULONG64)PAGE_ALIGN(__readcr3());
+    PA.QuadPart = CurCr3;
+    PVOID MapAddress = MmGetVirtualForPhysical(PA);
+    if (MapAddress)
+    {
+        for (int i = 0; i < 512; i++)
+        {
+            if ((*(PULONG64)((ULONG64)MapAddress + i * 8) & 0x0000fffffffff000) == (CurCr3 & 0x0000fffffffff000))
+            {
+                ULONG64 SelfMapIndex = i;
+                ULONG64 PteBase = (ULONG64)(0xffff000000000000 + (SelfMapIndex << 39));
+                ULONG64 PdeBase = PteBase + (SelfMapIndex << 30);
+                ULONG64 PpeBase = PdeBase + (SelfMapIndex << 21);
+                ULONG64 PxeBase = PpeBase + (SelfMapIndex << 12);
+                printf("SelfMapIndex=%d\n", SelfMapIndex);
+                printf("PteBase=%p\n", PteBase);
+                printf("PdeBase=%p\n", PdeBase);
+                printf("PpeBase=%p\n", PpeBase);
+                printf("PxeBase=%p\n", PxeBase);
+                break;
+            }
+        }
+    }
+#endif
+}
+
 EXTERN_C
 NTSTATUS
 LibWinDrvDriverEntry(__in DRIVER_OBJECT *DriverObject, __in UNICODE_STRING *RegistryPath)
@@ -70,6 +105,7 @@ LibWinDrvDriverEntry(__in DRIVER_OBJECT *DriverObject, __in UNICODE_STRING *Regi
     printf("hello world2\n");*/
     // KCETBSOD();
     main2();
+    InitPageTable();
 
     return STATUS_SUCCESS;
 }
