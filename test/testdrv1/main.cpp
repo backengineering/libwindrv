@@ -346,6 +346,467 @@ InitPageTable()
 }
 
 EXTERN_C
+void __writecr2(ULONG_PTR);
+
+EXTERN_C
+void
+_sgdt(void *Destination);
+
+EXTERN_C
+unsigned char
+_xtest(void);
+
+EXTERN_C
+void
+Testintrin()
+{
+#ifndef _ARM64_
+    // test cr0
+    {
+        auto cr0 = __readcr0();
+        printf("readcr0 cr0=%p\n", cr0);
+        __writecr0(cr0);
+        cr0 = __readcr0();
+        printf("writecr0 cr0=%p\n", cr0);
+    }
+
+    // test cr2
+    {
+        auto cr2 = __readcr2();
+        printf("readcr2 cr2=%p\n", cr2);
+        __writecr2(cr2);
+        cr2 = __readcr2();
+        printf("writecr2 cr2=%p\n", cr2);
+    }
+
+    // test cr3
+    {
+        auto cr3 = __readcr3();
+        printf("readcr3 cr3=%p\n", cr3);
+        __writecr3(cr3);
+        cr3 = __readcr3();
+        printf("writecr3 cr3=%p\n", cr3);
+    }
+
+    // test cr4
+    {
+        auto cr4 = __readcr4();
+        printf("readcr4 cr4=%p\n", cr4);
+        __writecr4(cr4);
+        cr4 = __readcr4();
+        printf("writecr4 cr4=%p\n", cr4);
+    }
+
+    // test cr8
+#    ifdef _WIN64
+    {
+        auto cr8 = __readcr8();
+        printf("readcr8 cr8=%p\n", cr8);
+        __writecr8(cr8);
+        cr8 = __readcr8();
+        printf("writecr8 cr8=%p\n", cr8);
+    }
+#    endif
+
+    // test dr
+    {
+        auto dr0 = __readdr(0);
+        printf("read dr0=%p\n", dr0);
+        __writedr(0, dr0);
+        dr0 = __readdr(0);
+        printf("write dr0=%p\n", dr0);
+
+        auto dr7 = __readdr(7);
+        printf("read dr7=%p\n", dr7);
+        __writedr(0, dr7);
+        dr7 = __readdr(7);
+        printf("write dr7=%p\n", dr7);
+    }
+
+    // test msr
+    {
+        auto msr_C0000082 = __readmsr(0xC0000082);
+        printf("read msr 0xC0000082 =%p\n", msr_C0000082);
+
+        __writemsr(0xC0000082, 0);
+        auto msr_C0000082_temp = __readmsr(0xC0000082);
+        printf("write msr 0xC0000082 =%p\n", msr_C0000082_temp);
+
+        __writemsr(0xC0000082, msr_C0000082);
+        msr_C0000082 = __readmsr(0xC0000082);
+        printf("write msr 0xC0000082 =%p\n", msr_C0000082);
+    }
+
+    // test cpuid
+    {
+        int a[4] = {0};
+        __cpuid(a, 1);
+        auto ecx = a[2];
+        if (ecx & 0x80000000)
+        {
+            printf("cpuid: You are in virtual machine!\n");
+        }
+
+        memset(a, 0, sizeof(a));
+        // CPUID_ADDR_WIDTH 0x80000008
+        __cpuid(a, 0x80000008);
+        unsigned int AddrWidth = ((a[0] >> 8) & 0x0ff);
+        printf("cpuid: AddrWidth=%d\n", AddrWidth);
+    }
+
+    // test cpuidex
+    {
+        int a[4] = {0};
+        __cpuidex(a, 1, 0);
+        auto ecx = a[2];
+        if (ecx & 0x80000000)
+        {
+            printf("cpuidex: You are in virtual machine!\n");
+        }
+
+        memset(a, 0, sizeof(a));
+        // CPUID_ADDR_WIDTH 0x80000008
+        __cpuidex(a, 0x80000008, 0);
+        unsigned int AddrWidth = ((a[0] >> 8) & 0x0ff);
+        printf("cpuidex: AddrWidth=%d\n", AddrWidth);
+    }
+
+    // test xbeign/xend
+    {
+        printf("test xbeign/xend\n");
+        __try
+        {
+            _xbegin();
+            _xend();
+        }
+        __except (1)
+        {
+            printf("test xbeign/xend goto except handler\n");
+        }
+    }
+
+    // test stosb
+    {
+        unsigned char c = 0x40; /* '@' character */
+        unsigned char s[] = "*********************************";
+
+        printf("%s\n", s);
+        __stosb((unsigned char *)s + 1, c, 6);
+        printf("%s\n", s);
+        //*********************************
+        //*@@@@@@**************************
+    }
+
+    // test stosw
+    {
+        unsigned short val = 128;
+        unsigned short a[100];
+        memset(a, 0, sizeof(a));
+        __stosw(a + 10, val, 2);
+        printf("%u %u %u %u\n", a[9], a[10], a[11], a[12]);
+        // 0 128 128 0
+    }
+
+    // test stosd
+    {
+        unsigned long val = 99999;
+        unsigned long a[10];
+
+        memset(a, 0, sizeof(a));
+        __stosd(a + 1, val, 2);
+
+        printf("%u %u %u %u\n", a[0], a[1], a[2], a[3]);
+        // 0 99999 99999 0
+    }
+
+#    ifdef _WIN64
+    // test stosq
+    {
+        unsigned __int64 val = 0xFFFFFFFFFFFFI64;
+        unsigned __int64 a[10];
+        memset(a, 0, sizeof(a));
+        __stosq(a + 1, val, 2);
+        printf("%I64x %I64x %I64x %I64x\n", a[0], a[1], a[2], a[3]);
+        // 0 ffffffffffff ffffffffffff 0
+    }
+#    endif
+
+    // test readpmc
+    {
+        auto pmc0 = __readpmc(0);
+        printf("pmc0:%I64x\n", pmc0);
+    }
+
+    // test readtscp
+    {
+        unsigned int aux = 1;
+        auto tickcount = __rdtscp(&aux);
+        printf("aux:0x%x\n", aux);
+        printf("tickcount:%I64x\n", tickcount);
+    }
+
+    // test inbyte
+    {
+        ///* VMware I/O Port  */
+        __try
+        {
+            auto PortRead = __inbyte(5658);
+            __outbyte(5658, PortRead);
+            printf("inbyte:%x\n", PortRead);
+        }
+        __except (1)
+        {
+            printf("inbyte in except hanlder\n");
+        }
+    }
+
+    // test inword
+    {
+        ///* VMware I/O Port  */
+        __try
+        {
+            auto PortRead = __inword(5658);
+            __outword(5658, PortRead);
+            printf("inword:%x\n", PortRead);
+        }
+        __except (1)
+        {
+            printf("inword in except hanlder\n");
+        }
+    }
+
+    // test indword
+    {
+        ///* VMware I/O Port  */
+        __try
+        {
+            auto PortRead = __indword(5658);
+            __outdword(5658, PortRead);
+            printf("indword:%x\n", PortRead);
+        }
+        __except (1)
+        {
+            printf("indword in except hanlder\n");
+        }
+    }
+
+    // test invlpg
+    {
+        auto mem = ExAllocatePool(NonPagedPool, 0x1000);
+        if (mem)
+        {
+            __invlpg(mem);
+            printf("__invlpg addr=%p\n", mem);
+            ExFreePool(mem);
+        }
+    }
+
+    // test invpcid
+    {
+        ULONG_PTR pcid = 11;
+        _invpcid(2, &pcid);
+        printf("_invpcid pcid=%p\n", pcid);
+    }
+
+    // test inbytestring
+    {
+        ///* VMware I/O Port  */
+        char buf[100] = {0};
+        __inbytestring(5658, (PUCHAR)buf, sizeof(buf));
+        __outbytestring(5658, (PUCHAR)buf, sizeof(buf));
+        printf("buf1=%s\n", buf);
+    }
+
+    // test __inwordstring
+    {
+        ///* VMware I/O Port  */
+        unsigned short buf = 2;
+        __inwordstring(5658, &buf, sizeof(buf));
+        __outwordstring(5658, &buf, sizeof(buf));
+        printf("buf2=%d\n", buf);
+    }
+
+    // test __indwordstring
+    {
+        ///* VMware I/O Port  */
+        unsigned long buf = 2;
+        __indwordstring(5658, &buf, sizeof(buf));
+        __outdwordstring(5658, &buf, sizeof(buf));
+        printf("buf3=%d\n", buf);
+    }
+
+    // test cti/sti
+    {
+        printf("test cti/sti begin\n");
+        _disable();
+        _enable();
+        printf("test cti/sti end\n");
+    }
+
+    // test lsl
+    {
+        printf("test lsl begin\n");
+
+#    define EFLAGS_ZF 0x00000040
+#    define KGDT_R3_DATA 0x0020
+#    define RPL_MASK 0x3
+
+#    ifdef _M_IX86
+        typedef unsigned int READETYPE;
+#    else
+        typedef unsigned __int64 READETYPE;
+#    endif
+
+        const unsigned long initsl = 0xbaadbabe;
+        READETYPE eflags = 0;
+        unsigned long sl = initsl;
+
+        printf("Before: segment limit =0x%x eflags =0x%x\n", sl, eflags);
+        sl = __segmentlimit(KGDT_R3_DATA + RPL_MASK);
+
+        eflags = __readeflags();
+        printf("eflags=%p\n", eflags);
+        __writeeflags(eflags & ~EFLAGS_ZF);
+        auto eflags2 = __readeflags();
+        __writeeflags(eflags);
+        printf("eflags2=%p\n", eflags2);
+
+        printf(
+            "After: segment limit =0x%x eflags =0x%x eflags.zf = %s\n",
+            sl,
+            eflags,
+            (eflags & EFLAGS_ZF) ? "set" : "clear");
+
+        // If ZF is set, the call to lsl succeeded; if ZF is clear, the call failed.
+        printf("%s\n", eflags & EFLAGS_ZF ? "Success!" : "Fail!");
+
+        // You can verify the value of sl to make sure that the instruction wrote to it
+        printf("sl was %s\n", (sl == initsl) ? "unchanged" : "changed");
+
+        printf("test lsl end\n");
+
+        /*
+        Before: segment limit =0xbaadbabe eflags =0x0
+        After: segment limit =0xffffffff eflags =0x256 eflags.zf = set
+        Success!
+        sl was changed
+        */
+    }
+
+    // test wbinvd
+    {
+        printf("test wbinvd begin\n");
+        __wbinvd();
+        printf("test wbinvd end\n");
+    }
+
+    {
+        auto eflags = __readeflags();
+        printf("eflags 3389 =%p\n", eflags);
+    }
+
+    struct Idtr
+    {
+        unsigned short limit;
+        ULONG_PTR base;
+    };
+    // test sidt/lidt
+    {
+        Idtr IDT{};
+        __sidt(&IDT);
+        __lidt(&IDT);
+        printf("test sidt/lidt end\n");
+    }
+
+    {
+        auto eflags = __readeflags();
+        printf("eflags 007 =%p\n", eflags);
+    }
+
+    // test gdtr
+    {
+        using Gdtr = Idtr;
+        Gdtr gdtr = {};
+        _sgdt(&gdtr);
+        printf("test _sgdt end\n");
+    }
+
+    {
+        auto eflags = __readeflags();
+        printf("eflags 996 =%p\n", eflags);
+    }
+
+    // test __readgsbyte
+    {
+        auto old = __readgsbyte(0x10);
+        printf("test gs  __readgsbyte(0x10)=0x%x\n", old);
+        __writegsbyte(0x10, 0xcc);
+        __incgsbyte(0x10);
+        __addgsbyte(0x10, 1);
+        printf("test gs  __readgsbyte(0x10)=0x%x\n", __readgsbyte(0x10));
+        __writegsbyte(0x10, old);
+        printf("test gs  __readgsbyte(0x10)=0x%x\n", __readgsbyte(0x10));
+    }
+
+    {
+        auto eflags = __readeflags();
+        printf("eflags 997 =%p\n", eflags);
+    }
+
+    // test __readgsword
+    {
+        auto old = __readgsword(0x10);
+        printf("test gs  __readgsword(0x10)=0x%x\n", old);
+        __writegsword(0x10, 0xcccc);
+        __incgsword(0x10);
+        __addgsword(0x10, 1);
+        printf("test gs  __readgsword(0x10)=0x%x\n", __readgsword(0x10));
+        __writegsword(0x10, old);
+        printf("test gs  __readgsword(0x10)=0x%x\n", __readgsword(0x10));
+    }
+
+    {
+        auto eflags = __readeflags();
+        printf("eflags 998 =%p\n", eflags);
+    }
+
+    // test __readgsdword
+    {
+        auto old = __readgsdword(0x10);
+        printf("test gs  __readgsdword(0x10)=0x%x\n", old);
+        __writegsdword(0x10, 0xccccdddd);
+        __incgsdword(0x10);
+        __addgsdword(0x10, 1);
+        printf("test gs  __readgsdword(0x10)=0x%x\n", __readgsdword(0x10));
+        __writegsdword(0x10, old);
+        printf("test gs  __readgsdword(0x10)=0x%x\n", __readgsdword(0x10));
+    }
+
+    {
+        auto eflags = __readeflags();
+        printf("eflags 999 =%p\n", eflags);
+    }
+
+    // test __readgsqword
+    {
+        auto old = __readgsqword(0x10);
+        printf("test gs  __readgsqword(0x10)=0x%llx\n", old);
+        __writegsqword(0x10, 0x1122334411223344);
+        __incgsqword(0x10);
+        __addgsqword(0x10, 1);
+        printf("test gs  __readgsqword(0x10)=0x%llx\n", __readgsqword(0x10));
+        __writegsqword(0x10, old);
+        printf("test gs  __readgsqword(0x10)=0x%llx\n", __readgsqword(0x10));
+    }
+
+    {
+        auto eflags = __readeflags();
+        printf("eflags 1010 =%p\n", eflags);
+    }
+#endif
+}
+
+EXTERN_C
 NTSTATUS
 LibWinDrvDriverEntry(__in DRIVER_OBJECT *DriverObject, __in UNICODE_STRING *RegistryPath)
 {
@@ -363,6 +824,7 @@ LibWinDrvDriverEntry(__in DRIVER_OBJECT *DriverObject, __in UNICODE_STRING *Regi
     // KCETBSOD();
     main2();
     // InitPageTable();
+    Testintrin();
 
     return STATUS_SUCCESS;
 }
