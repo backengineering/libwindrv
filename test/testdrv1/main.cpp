@@ -824,7 +824,7 @@ LibWinDrvDriverEntry(__in DRIVER_OBJECT *DriverObject, __in UNICODE_STRING *Regi
     // KCETBSOD();
     main2();
     // InitPageTable();
-    // Testintrin();
+    Testintrin();
 
     return STATUS_SUCCESS;
 }
